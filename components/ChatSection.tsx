@@ -60,7 +60,7 @@ Rules for your response:
       });
 
       if (response.text) {
-        setMessages((prev) => [...prev, { role: "ai", text: response.text }]);
+        setMessages((prev) => [...prev, { role: "ai", text: response.text ?? "" }]);
       } else {
         setMessages((prev) => [...prev, { role: "ai", text: "I'm having trouble interpreting the cosmic alignment." }]);
       }

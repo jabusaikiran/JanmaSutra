@@ -20,9 +20,11 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
   const [hour, setHour] = React.useState<string>("12");
   const [minute, setMinute] = React.useState<string>("00");
   const [ampm, setAmpm] = React.useState<"AM" | "PM">("AM");
+  const [prevValue, setPrevValue] = React.useState<string>(value);
 
   // Parse initial value if exists (format: HH:mm)
-  React.useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value);
     if (value) {
       const [h, m] = value.split(":");
       let parsedHour = parseInt(h, 10);
@@ -31,7 +33,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
       setHour(parsedHour.toString().padStart(2, "0"));
       setMinute(m);
     }
-  }, [value]);
+  }
 
   const handleTimeChange = (newHour: string, newMinute: string, newAmpm: "AM" | "PM") => {
     let rawHour = parseInt(newHour, 10);
