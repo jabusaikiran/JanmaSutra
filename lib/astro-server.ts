@@ -1,55 +1,8 @@
 import { utc_to_jd, calc, set_sid_mode, constants } from "sweph";
-
-export const TITHI_NAMES = [
-  "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
-  "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
-  "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima",
-  "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
-  "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
-  "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"
-];
-
-export const NAKSHATRA_NAMES = [
-  "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashirsha",
-  "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha",
-  "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati",
-  "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha",
-  "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada",
-  "Uttara Bhadrapada", "Revati"
-];
-
-export const ZODIAC_SIGNS = [
-  { name: "Capricorn", icon: "♑", start: { m: 12, d: 22 }, end: { m: 1, d: 19 } },
-  { name: "Aquarius", icon: "♒", start: { m: 1, d: 20 }, end: { m: 2, d: 18 } },
-  { name: "Pisces", icon: "♓", start: { m: 2, d: 19 }, end: { m: 3, d: 20 } },
-  { name: "Aries", icon: "♈", start: { m: 3, d: 21 }, end: { m: 4, d: 19 } },
-  { name: "Taurus", icon: "♉", start: { m: 4, d: 20 }, end: { m: 5, d: 20 } },
-  { name: "Gemini", icon: "♊", start: { m: 5, d: 21 }, end: { m: 6, d: 20 } },
-  { name: "Cancer", icon: "♋", start: { m: 6, d: 21 }, end: { m: 7, d: 22 } },
-  { name: "Leo", icon: "♌", start: { m: 7, d: 23 }, end: { m: 8, d: 22 } },
-  { name: "Virgo", icon: "♍", start: { m: 8, d: 23 }, end: { m: 9, d: 22 } },
-  { name: "Libra", icon: "♎", start: { m: 9, d: 23 }, end: { m: 10, d: 22 } },
-  { name: "Scorpio", icon: "♏", start: { m: 10, d: 23 }, end: { m: 11, d: 21 } },
-  { name: "Sagittarius", icon: "♐", start: { m: 11, d: 22 }, end: { m: 12, d: 21 } },
-];
-
-export function getZodiacSign(dob: string) {
-  if (!dob) return null;
-  const [year, month, day] = dob.split("-").map(Number);
-  
-  for (const sign of ZODIAC_SIGNS) {
-    if (
-      (month === sign.start.m && day >= sign.start.d) ||
-      (month === sign.end.m && day <= sign.end.d)
-    ) {
-      return sign;
-    }
-  }
-  return ZODIAC_SIGNS[0];
-}
+import { TITHI_NAMES, NAKSHATRA_NAMES } from "./astro-shared";
 
 /** Helper to calculate Julian Day from local time details */
-function getJulianDay(year: number, month: number, day: number, hour: number, min: number, offsetMinutes: number) {
+export function getJulianDay(year: number, month: number, day: number, hour: number, min: number, offsetMinutes: number) {
   // Use Date.UTC directly to prevent server local time from skewing results before timezone offset is applied.
   const utcMs = Date.UTC(year, month - 1, day, hour, min, 0) + (offsetMinutes * 60000);
   const utcDate = new Date(utcMs);
@@ -67,7 +20,7 @@ function getJulianDay(year: number, month: number, day: number, hour: number, mi
 }
 
 /** Computes planetary positions returning Sun Rasi, Moong Longitude, and Tithi Index */
-function getEphemerisData(jd_et: number) {
+export function getEphemerisData(jd_et: number) {
   set_sid_mode(constants.SE_SIDM_LAHIRI, 0, 0);
   const flags = constants.SEFLG_MOSEPH | constants.SEFLG_SPEED | constants.SEFLG_SIDEREAL;
   

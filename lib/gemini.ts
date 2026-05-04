@@ -69,3 +69,102 @@ Return the response strictly as a JSON object matching this schema:
     };
   }
 }
+
+export async function generateTodayInsight(tithi: string, nakshatra: string) {
+  const apiKey = (process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY)?.trim();
+  if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+    return { insight: "Today is a day for steady progress. Align your actions with the natural flow of time." };
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+  const prompt = `Today's Panchang: Tithi is ${tithi} and Nakshatra is ${nakshatra}. 
+  Generate a short 2-3 line reflective "Today's Insight" based on this combination. 
+  The tone should be:
+  - Calm, respectful, and slightly poetic
+  - Focus on how one can align their mindset for the day.
+  - Simple English.
+  
+  Return strictly as a JSON object: { "insight": "string" }`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-pro-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: { insight: { type: Type.STRING } },
+          required: ["insight"]
+        }
+      }
+    });
+    return JSON.parse(response.text || '{"insight": "Embrace the rhythm of the day with grace."}');
+  } catch {
+    return { insight: "Embrace the rhythm of the day with grace and steady focus." };
+  }
+}
+
+export async function generateFamilyInsight(familyNakshatras: string[]) {
+  const apiKey = (process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY)?.trim();
+  if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+    return { insight: "Your family carries a diverse yet harmonious blend of energies. Together, you form a resilient support system." };
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+  const prompt = `A family has members born under these Nakshatras: ${familyNakshatras.join(", ")}.
+  Generate a 2-4 line reflective insight on the collective family energy and how they complement each other.
+  The tone should be warm, respectful, and focused on harmony.
+  
+  Return strictly as a JSON object: { "insight": "string" }`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-pro-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: { insight: { type: Type.STRING } },
+          required: ["insight"]
+        }
+      }
+    });
+    return JSON.parse(response.text || '{"insight": "Your family forms a beautiful tapestry of shared strengths."}');
+  } catch {
+    return { insight: "Your family forms a beautiful tapestry of shared strengths and mutual growth." };
+  }
+}
+
+export async function culturalAI(query: string) {
+  const apiKey = (process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY)?.trim();
+  if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+    return { response: "I am here to help you explore Sanatana Dharma. Please ask any cultural question." };
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+  const prompt = `You are a respectful and knowledgeable Cultural Assistant specializing in Sanatana Dharma, Vedic concepts, and Panchang traditions. 
+  Answer the following query clearly, simply, and with deep cultural context.
+  Query: ${query}
+  
+  Return strictly as a JSON object: { "response": "string" }`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-pro-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: { response: { type: Type.STRING } },
+          required: ["response"]
+        }
+      }
+    });
+    return JSON.parse(response.text || '{"response": "Cultural wisdom is a journey of exploration."}');
+  } catch {
+    return { response: "Cultural wisdom is a journey of exploration. I'll be here to guide you." };
+  }
+}
