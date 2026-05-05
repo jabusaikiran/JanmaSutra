@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import { calculatePanchang, findNextBirthday } from "@/lib/astro-server";
-import { getZodiacSign } from "@/lib/astro-shared";
+import { getZodiacSign, ZodiacSign } from "@/lib/astro-shared";
 import { NextBirthdaySelector } from "@/components/NextBirthdaySelector";
 import { IdentitySection } from "@/components/IdentitySection";
 import { NAKSHATRA_TRAITS } from "@/lib/astro-insights";
 import { RetentionLayer } from "@/components/RetentionLayer";
-import { PanchangData, ZodiacSign } from "@/lib/types";
+import { PanchangData } from "@/lib/types";
 
 /** Helper to get a descriptive icon for the Tithi */
 const getTithiIcon = (tithi: string) => {
