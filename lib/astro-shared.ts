@@ -1,3 +1,7 @@
+/**
+ * Names of the 30 Tithis (Lunar Phases).
+ * Index 14 is Purnima (Full Moon), Index 29 is Amavasya (New Moon).
+ */
 export const TITHI_NAMES = [
   "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
   "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
@@ -5,8 +9,11 @@ export const TITHI_NAMES = [
   "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
   "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
   "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"
-];
+] as const;
 
+/**
+ * Names of the 27 Nakshatras (Lunar Mansions).
+ */
 export const NAKSHATRA_NAMES = [
   "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashirsha",
   "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha",
@@ -14,9 +21,19 @@ export const NAKSHATRA_NAMES = [
   "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha",
   "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada",
   "Uttara Bhadrapada", "Revati"
-];
+] as const;
 
-export const ZODIAC_SIGNS = [
+export interface ZodiacSign {
+  name: string;
+  icon: string;
+  start: { m: number; d: number };
+  end: { m: number; d: number };
+}
+
+/**
+ * Western Zodiac Signs for supplementary information.
+ */
+export const ZODIAC_SIGNS: readonly ZodiacSign[] = [
   { name: "Capricorn", icon: "♑", start: { m: 12, d: 22 }, end: { m: 1, d: 19 } },
   { name: "Aquarius", icon: "♒", start: { m: 1, d: 20 }, end: { m: 2, d: 18 } },
   { name: "Pisces", icon: "♓", start: { m: 2, d: 19 }, end: { m: 3, d: 20 } },
@@ -31,17 +48,17 @@ export const ZODIAC_SIGNS = [
   { name: "Sagittarius", icon: "♐", start: { m: 11, d: 22 }, end: { m: 12, d: 21 } },
 ];
 
-export function getZodiacSign(dob: string) {
-  if (!dob) return null;
-  const [year, month, day] = dob.split("-").map(Number);
+/**
+ * Returns the Zodiac sign based on a date of birth string (ISO format).
+ */
+export function getZodiacSign(dob: string): ZodiacSign {
+  if (!dob) return ZODIAC_SIGNS[0];
+  const [, month, day] = dob.split("-").map(Number);
   
-  for (const sign of ZODIAC_SIGNS) {
-    if (
-      (month === sign.start.m && day >= sign.start.d) ||
-      (month === sign.end.m && day <= sign.end.d)
-    ) {
-      return sign;
-    }
-  }
-  return ZODIAC_SIGNS[0];
+  const sign = ZODIAC_SIGNS.find(s => 
+    (month === s.start.m && day >= s.start.d) || 
+    (month === s.end.m && day <= s.end.d)
+  );
+
+  return sign ?? ZODIAC_SIGNS[0];
 }

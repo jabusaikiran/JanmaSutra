@@ -1,23 +1,44 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { ArrowLeft, Info, HelpCircle } from "lucide-react";
+import { ArrowLeft, HelpCircle } from "lucide-react";
 import { calculatePanchang, findNextBirthday } from "@/lib/astro-server";
 import { getZodiacSign } from "@/lib/astro-shared";
 import { NextBirthdaySelector } from "@/components/NextBirthdaySelector";
 import { IdentitySection } from "@/components/IdentitySection";
 import { NAKSHATRA_TRAITS } from "@/lib/astro-insights";
 import { RetentionLayer } from "@/components/RetentionLayer";
+import { PanchangData, ZodiacSign } from "@/lib/types";
+
+/** Helper to get a descriptive icon for the Tithi */
+const getTithiIcon = (tithi: string) => {
+  const t = tithi.toLowerCase();
+  if (t.includes('amavasya')) return "🌑";
+  if (t.includes('purnima')) return "🌕";
+  if (t.includes('shukla')) return "🌓";
+  return "🌗";
+};
+
+interface CosmicCardProps {
+  icon: string | React.ReactNode;
+  label: string;
+  value: string;
+  className: string;
+}
+
+const CosmicCard = ({ icon, label, value, className }: CosmicCardProps) => (
+  <div className={`${className} p-3 md:p-6 rounded-xl md:rounded-2xl text-center border shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col items-center justify-center`}>
+    <div className="text-2xl md:text-4xl mb-1 md:mb-3">{icon}</div>
+    <h4 className="font-serif text-[15px] md:text-2xl mb-0.5 md:mb-1 leading-tight">{value}</h4>
+    <p className="text-[9px] md:text-sm uppercase tracking-wider opacity-80">{label}</p>
+  </div>
+);
 
 export default async function ResultPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const params = await searchParams;
-  const dob = params.dob as string;
-  const tob = params.tob as string;
-  const place = params.place as string;
-  const tzOffset = params.tzOffset as string;
+  const { dob, tob, place, tzOffset, targetYear: targetYearParam } = params;
   const name = params.name as string || "";
-  const targetYearParam = params.targetYear as string;
 
-  if (!dob || !place) {
+  if (!dob || typeof dob !== 'string' || !place) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center h-screen">
         <p className="text-earth-mid mb-4">Please provide your birth details to continue.</p>
@@ -28,21 +49,13 @@ export default async function ResultPage({ searchParams }: { searchParams: Promi
     );
   }
 
-  const panchang = calculatePanchang(dob, tob, tzOffset);
+  const panchang = calculatePanchang(dob, (tob as string) || "", (tzOffset as string) || "-330");
   const zodiacSign = getZodiacSign(dob);
   
-  const getTithiIcon = (tithi: string) => {
-    const t = tithi.toLowerCase();
-    if (t.includes('amavasya')) return "🌑";
-    if (t.includes('purnima')) return "🌕";
-    if (t.includes('shukla')) return "🌓";
-    return "🌗";
-  };
+  const targetYear = targetYearParam ? parseInt(targetYearParam as string, 10) : new Date().getFullYear();
+  const nextBirthdayDate = findNextBirthday(panchang._internal.sunRasi, panchang._internal.tithiIndex, targetYear, (tzOffset as string) || "-330");
 
-  const targetYear = targetYearParam ? parseInt(targetYearParam, 10) : new Date().getFullYear();
-  const nextBirthdayDate = findNextBirthday(panchang._internal.sunRasi, panchang._internal.tithiIndex, targetYear, tzOffset);
-
-  const nakshatraMeaning = NAKSHATRA_TRAITS[panchang.nakshatra];
+  const nakshatraMeaning = NAKSHATRA_TRAITS[panchang.nakshatra as keyof typeof NAKSHATRA_TRAITS];
 
   return (
     <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 md:py-20 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
@@ -67,27 +80,31 @@ export default async function ResultPage({ searchParams }: { searchParams: Promi
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-10 md:mb-12">
         {zodiacSign && (
-          <div className="bg-amber-50 p-3 md:p-6 rounded-xl md:rounded-2xl text-center border border-amber-200 shadow-[0_4px_20px_rgba(217,119,6,0.05)] flex flex-col items-center justify-center">
-            <div className="text-2xl md:text-4xl mb-1 md:mb-3">{zodiacSign.icon}</div>
-            <h4 className="font-serif text-[15px] md:text-2xl text-amber-950 mb-0.5 md:mb-1 leading-tight">{zodiacSign.name}</h4>
-            <p className="text-[9px] md:text-sm text-amber-800 uppercase tracking-wider">Zodiac Sign</p>
-          </div>
+          <CosmicCard 
+            icon={zodiacSign.icon} 
+            label="Zodiac Sign" 
+            value={zodiacSign.name} 
+            className="bg-amber-50 border-amber-200 text-amber-950" 
+          />
         )}
-        <div className="bg-indigo-50 p-3 md:p-6 rounded-xl md:rounded-2xl text-center border border-indigo-200 shadow-[0_4px_20px_rgba(79,70,229,0.05)] flex flex-col items-center justify-center">
-          <div className="text-2xl md:text-4xl mb-1 md:mb-3">{getTithiIcon(panchang.tithi)}</div>
-          <h4 className="font-serif text-[15px] md:text-2xl text-indigo-950 mb-0.5 md:mb-1 leading-tight">{panchang.tithi}</h4>
-          <p className="text-[9px] md:text-sm text-indigo-800 uppercase tracking-wider">Lunar Phase</p>
-        </div>
-        <div className="bg-rose-50 p-3 md:p-6 rounded-xl md:rounded-2xl text-center border border-rose-200 shadow-[0_4px_20px_rgba(225,29,72,0.05)] flex flex-col items-center justify-center">
-          <div className="text-2xl md:text-4xl mb-1 md:mb-3">⭐</div>
-          <h4 className="font-serif text-[15px] md:text-2xl text-rose-950 mb-0.5 md:mb-1 leading-tight">{panchang.nakshatra}</h4>
-          <p className="text-[9px] md:text-sm text-rose-800 uppercase tracking-wider">Birth Star</p>
-        </div>
-        <div className="bg-teal-50 p-3 md:p-6 rounded-xl md:rounded-2xl text-center border border-teal-200 shadow-[0_4px_20px_rgba(13,148,136,0.05)] flex flex-col items-center justify-center">
-          <div className="text-2xl md:text-4xl mb-1 md:mb-3">☀️</div>
-          <h4 className="font-serif text-[15px] md:text-2xl text-teal-950 mb-0.5 md:mb-1 leading-tight">{panchang.paksha}</h4>
-          <p className="text-[9px] md:text-sm text-teal-800 uppercase tracking-wider">Moon Cycle</p>
-        </div>
+        <CosmicCard 
+          icon={getTithiIcon(panchang.tithi)} 
+          label="Lunar Phase" 
+          value={panchang.tithi} 
+          className="bg-indigo-50 border-indigo-200 text-indigo-950" 
+        />
+        <CosmicCard 
+          icon="⭐" 
+          label="Birth Star" 
+          value={panchang.nakshatra} 
+          className="bg-rose-50 border-rose-200 text-rose-950" 
+        />
+        <CosmicCard 
+          icon="☀️" 
+          label="Moon Cycle" 
+          value={panchang.paksha} 
+          className="bg-teal-50 border-teal-200 text-teal-950" 
+        />
       </div>
 
       {nakshatraMeaning && (

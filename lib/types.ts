@@ -4,6 +4,20 @@ export interface PanchangData {
   paksha: string;
 }
 
+export interface PanchangInternal {
+  tithiIndex: number;
+  sunRasi: number;
+  moonLong: number;
+  sunLong: number;
+}
+
+export interface EphemerisData {
+  moonLong: number;
+  sunLong: number;
+  sunRasi: number;
+  tithiIndex: number;
+}
+
 export interface Festival {
   name: string;
   description: string;

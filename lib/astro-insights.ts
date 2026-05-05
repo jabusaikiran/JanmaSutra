@@ -15,7 +15,7 @@ export const TITHI_MEANINGS: Record<string, string> = {
   "Chaturdashi": "The fourteenth lunar day. Representing raw power, intense spiritual awakening, and courage in the dark.",
   "Purnima": "The full moon. Reflects completeness, abundance, emotional fullness, and a highly luminous nature.",
   "Amavasya": "The new moon. Signifies deep introspection, ancestral connection, and powerful hidden potential."
-};
+} as const;
 
 export const NAKSHATRA_TRAITS: Record<string, string> = {
   "Ashwini": "Swift, athletic, and fiercely independent, you are a natural trailblazer with healing energy.",
@@ -45,4 +45,4 @@ export const NAKSHATRA_TRAITS: Record<string, string> = {
   "Purva Bhadrapada": "Passionate, idealistic, and at times extreme, you are willing to sacrifice for higher causes.",
   "Uttara Bhadrapada": "Deeply compassionate, spiritually mature, and patient, your wisdom is like a calm, expansive ocean.",
   "Revati": "Empathetic, fully evolved, and deeply spiritual, you possess an unconditional love and serve as a safe harbor for others."
-};
+} as const;

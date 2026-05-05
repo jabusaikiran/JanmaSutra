@@ -5,6 +5,22 @@ import { motion } from "motion/react";
 import { Share2, Download, Sparkles } from "lucide-react";
 import { toPng } from "html-to-image";
 
+function getCountdownString(targetDate?: string | null) {
+  if (!targetDate) return "";
+  
+  const now = new Date().getTime();
+  const target = new Date(targetDate).getTime();
+  const distance = target - now;
+
+  if (distance < 0) {
+    return "It's your Lunar Birthday today!";
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  return `${days}d ${hours}h until your real birthday`;
+}
+
 interface RetentionLayerProps {
   userPanchang: {
     tithi: string;
@@ -19,31 +35,48 @@ export function RetentionLayer({ userPanchang, name, nextBirthday }: RetentionLa
   const [todayData, setTodayData] = useState<any>(null);
   const [loadingToday, setLoadingToday] = useState(true);
   const cardRef = React.useRef<HTMLDivElement>(null);
+  const [, setTick] = useState(0);
+
+  const countdown = getCountdownString(nextBirthday);
 
   useEffect(() => {
-    // Save to local storage
+    if (!nextBirthday) return;
+    
+    // Update every minute to refresh the countdown
+    const interval = setInterval(() => {
+      setTick(t => t + 1);
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [nextBirthday]);
+
+  useEffect(() => {
+    // Save to local storage for persistence across visits
     if (typeof window !== "undefined") {
       const profile = { name, panchang: userPanchang, nextBirthday };
       localStorage.setItem("vedic_profile", JSON.stringify(profile));
     }
 
-    // Fetch today's insight
+    // Fetch today's cosmic insight
+    let isMounted = true;
     async function fetchToday() {
       try {
         const res = await fetch("/api/today");
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setTodayData(data);
+        if (isMounted) setTodayData(data);
       } catch (err) {
-        console.error("Failed to fetch today's insight", err);
+        console.error("Failed to fetch today's insight:", err);
       } finally {
-        setLoadingToday(false);
+        if (isMounted) setLoadingToday(false);
       }
     }
     fetchToday();
+    return () => { isMounted = false; };
   }, [userPanchang, name, nextBirthday]);
 
   const handleDownloadCard = async () => {
-    if (cardRef.current === null) return;
+    if (!cardRef.current) return;
     try {
       const dataUrl = await toPng(cardRef.current, { cacheBust: true });
       const link = document.createElement("a");
@@ -51,48 +84,36 @@ export function RetentionLayer({ userPanchang, name, nextBirthday }: RetentionLa
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      console.error("Failed to download card", err);
+      console.error("Card download failed:", err);
     }
   };
 
   const handleShare = async () => {
+    const shareText = `I am born under ${userPanchang.tithi} Tithi and ${userPanchang.nakshatra} Nakshatra. Find your real cosmic birthday!`;
+    const shareUrl = window.location.href;
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: "My Vedic Identity",
-          text: `I am born under ${userPanchang.tithi} Tithi and ${userPanchang.nakshatra} Nakshatra. Find your real cosmic birthday!`,
-          url: window.location.href,
+          text: shareText,
+          url: shareUrl,
         });
       } catch (err) {
-        console.log("Share failed", err);
+        // If share is cancelled by user, we don't need to log it as an error
+        if ((err as Error).name !== 'AbortError') {
+          console.error("Share failed:", err);
+        }
       }
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Link copied to clipboard!");
+      } catch (err) {
+        console.error("Clipboard copy failed:", err);
+      }
     }
   };
-
-  // Countdown for next birthday
-  const [countdown, setCountdown] = useState("");
-  useEffect(() => {
-    if (!nextBirthday) return;
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const target = new Date(nextBirthday).getTime();
-      const distance = target - now;
-
-      if (distance < 0) {
-        setCountdown("It's your Lunar Birthday today!");
-        clearInterval(interval);
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      setCountdown(`${days}d ${hours}h until your real birthday`);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [nextBirthday]);
 
   return (
     <div className="space-y-12 mt-16 pt-16 border-t border-stone-200">

@@ -350,8 +350,8 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
              <p className={`text-[9px] sm:text-xs max-w-[200px] leading-relaxed mx-auto italic mt-1 sm:mt-0 ${theme.muted}`}>
                &quot;Born under the light of {nakshatra}&quot;
              </p>
-             <div className={`mt-2 sm:mt-4 pt-1 sm:pt-4 text-[0.5rem] sm:text-[0.65rem] uppercase tracking-[0.2em] opacity-80 ${theme.text}`}>
-               Astra Insights • {new Date().getFullYear()}
+             <div className={`mt-2 sm:mt-4 pt-1 sm:pt-4 text-[0.45rem] sm:text-[0.6rem] uppercase tracking-[0.15em] opacity-70 ${theme.text}`}>
+               Check your actual birthday at Janma Sutra
              </div>
           </div>
 

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, Book, Calendar, Moon } from "lucide-react";
+import { Home, Users, Book, Calendar, Orbit } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -21,7 +21,7 @@ export function Header() {
       <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-0">
         <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-saffron rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-saffron/20 group-hover:scale-105 transition-transform">
-            <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white" />
+            <Orbit className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
           <span className="text-xl sm:text-2xl font-serif tracking-tight font-bold">
             Janma <span className="text-saffron font-normal">Sutra</span>

@@ -1,10 +1,4 @@
-export interface Festival {
-  name: string;
-  month: string; 
-  sunRasi: number; // 0=Mesha, 1=Vrishabha, ...
-  tithi: number; // 0-29. 0-14 is Shukla, 15-29 is Krishna. 14=Purnima, 29=Amavasya.
-  description: string;
-}
+import { Festival } from "./types";
 
 export const FESTIVALS: Festival[] = [
   {
