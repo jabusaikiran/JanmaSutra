@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 };
 
 import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 
 export default function RootLayout({
   children,
@@ -25,7 +24,9 @@ export default function RootLayout({
         <div className="flex-1 max-w-[1024px] mx-auto w-full px-4 sm:px-8 py-8 flex flex-col h-full">
           <Header />
           {children}
-          <Footer />
+          <footer className='flex justify-center border-t border-stone-200 pt-4 mt-auto'>
+            <div className='text-[10px] uppercase tracking-[0.2em] text-stone-400'>Rooted in Panchang • Designed for the Modern Soul</div>
+          </footer>
         </div>
       </body>
     </html>

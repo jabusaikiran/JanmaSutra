@@ -273,6 +273,21 @@ export default function StoryPage() {
         <div className="flex justify-center">
            <div className="w-px h-16 bg-stone-300" />
         </div>
+
+        <div className="space-y-6 pt-12">
+          <a
+            href="https://wa.me/917702183149?text=Hey%2C%20I%20visited%20Janma%20Sutra%20and%20wanted%20to%20say%20Hi%21"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center bg-stone-900 hover:bg-stone-800 text-stone-50 px-8 py-4 rounded-full shadow-lg font-medium text-sm transition-all active:scale-95"
+            id="whatsapp-button"
+          >
+            Say Hi to Developer
+          </a>
+          <p className="text-stone-500 text-sm font-medium tracking-wide">
+            Connect for collaboration, support, or just say hi.
+          </p>
+        </div>
       </motion.section>
     </main>
   );
