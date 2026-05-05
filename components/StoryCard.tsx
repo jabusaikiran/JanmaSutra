@@ -250,20 +250,20 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 mt-12 w-full max-w-[360px] mx-auto px-4 sm:px-0">
+    <div className="flex flex-col items-center gap-3 mt-4 w-full max-w-[300px] sm:max-w-[310px] mx-auto px-4 sm:px-0">
       <div className="text-center">
-        <h3 className="font-serif text-2xl font-medium text-stone-900 mb-1">Share Your Story</h3>
-        <p className="text-sm text-stone-600 flex items-center justify-center gap-1">
+        <h3 className="font-serif text-lg sm:text-xl font-medium text-stone-900 mb-0.5">Share Your Story</h3>
+        <p className="text-[10px] sm:text-xs text-stone-600 flex items-center justify-center gap-1">
           <PaintBucket className="w-3 h-3" /> Customize design
         </p>
       </div>
 
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-2 w-[calc(100vw-2rem)] sm:w-[400px] pb-2 px-1 snap-x select-none">
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-1 w-full pb-2 px-1 snap-x select-none">
         {Object.values(THEMES).map((t) => (
           <button
             key={t.id}
             onClick={() => setThemeId(t.id as ThemeType)}
-            className={`whitespace-nowrap flex-shrink-0 snap-start px-4 py-2 rounded-full text-xs font-medium transition-all ${
+            className={`whitespace-nowrap flex-shrink-0 snap-start px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
               themeId === t.id 
                 ? 'bg-stone-800 text-white shadow-md scale-105' 
                 : 'bg-white text-stone-800 border border-stone-200 hover:bg-stone-50'
@@ -277,7 +277,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
       {/* The Story Canvas */}
       <div 
         ref={cardRef}
-        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-2xl border border-white/20 flex flex-col items-center justify-center p-5 sm:p-8 text-center shrink-0 ${theme.bg}`}
+        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20 flex flex-col items-center justify-start p-4 sm:p-5 text-center shrink-0 ${theme.bg}`}
       >
         {/* Abstract/God Line Art */}
         {theme.art}
@@ -291,15 +291,15 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
         )}
         
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center h-full justify-between py-4 sm:py-6 w-full min-h-max gap-3 sm:gap-6">
+        <div className="relative z-10 flex flex-col items-center h-full justify-between py-1 sm:py-3 w-full min-h-max gap-1 sm:gap-2">
           
-          <div className="space-y-1 sm:space-y-3 flex flex-col items-center">
-            <span className={`uppercase tracking-widest text-[8px] sm:text-xs font-bold ${theme.accent}`}>Janma Sutra</span>
+          <div className="space-y-1 sm:space-y-2 flex flex-col items-center">
+            <span className={`uppercase tracking-widest text-[7px] sm:text-[10px] font-bold ${theme.accent}`}>Janma Sutra</span>
             
             <div className="flex flex-col items-center">
               {zodiacSign && (
                 <div 
-                  className={`w-8 h-8 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-lg sm:text-3xl shadow-lg border backdrop-blur-md mb-1 sm:mb-3 ${
+                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-2xl shadow-lg border backdrop-blur-md mb-0.5 sm:mb-2 ${
                     themeId === 'classic' 
                       ? 'bg-white border-stone-200/50 text-stone-900' 
                       : 'bg-black/30 border-white/20 text-white'
@@ -309,48 +309,48 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
                   {zodiacSign.icon}
                 </div>
               )}
-              <h2 className={`font-serif text-lg sm:text-3xl font-medium tracking-tight ${theme.text}`}>
+              <h2 className={`font-serif text-base sm:text-2xl font-medium tracking-tight ${theme.text}`}>
                 {name ? `${name}'s` : 'My'} True Birthday
               </h2>
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-2 sm:gap-6 w-full flex-1 justify-center">
-            <div className={`p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[3rem] border inline-flex items-center justify-center min-w-[120px] min-h-[120px] sm:min-w-[200px] sm:min-h-[200px] shadow-lg backdrop-blur-sm transition-all ${theme.cardBg}`}>
+          <div className="flex flex-col items-center gap-1 sm:gap-3 w-full flex-1 justify-center">
+            <div className={`p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[2rem] border inline-flex items-center justify-center min-w-[110px] min-h-[110px] sm:min-w-[160px] sm:min-h-[160px] shadow-lg backdrop-blur-sm transition-all ${theme.cardBg}`}>
               <div className="flex flex-col items-center justify-center text-center">
-                <span className={`text-[8px] sm:text-sm uppercase tracking-widest mb-1 sm:mb-2 font-medium ${theme.muted}`}>Tithi</span>
-                <span className={`font-serif text-xl sm:text-4xl font-semibold capitalize ${theme.text}`}>{tithi.split(" ").slice(1).join(" ")}</span>
-                <span className={`text-[8px] sm:text-sm uppercase tracking-wider mt-1 sm:mt-2 font-medium ${theme.accent}`}>{paksha}</span>
+                <span className={`text-[7px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1.5 font-medium ${theme.muted}`}>Tithi</span>
+                <span className={`font-serif text-lg sm:text-3xl font-semibold capitalize leading-none ${theme.text}`}>{tithi.split(" ").slice(1).join(" ")}</span>
+                <span className={`text-[7px] sm:text-xs uppercase tracking-wider mt-0.5 sm:mt-1.5 font-medium ${theme.accent}`}>{paksha}</span>
               </div>
             </div>
             
-            <div className="space-y-0.5 sm:space-y-2 w-full">
-              <span className={`text-[8px] sm:text-xs uppercase tracking-widest font-medium ${theme.muted}`}>Archetype</span>
-              <div className={`font-serif text-base sm:text-2xl font-medium leading-tight px-2 ${theme.text}`}>
+            <div className="space-y-0 sm:space-y-1 w-full">
+              <span className={`text-[7px] sm:text-xs uppercase tracking-widest font-medium ${theme.muted}`}>Archetype</span>
+              <div className={`font-serif text-sm sm:text-xl font-medium leading-tight px-2 ${theme.text}`}>
                 {archetype}
               </div>
             </div>
           </div>
 
-          <div className="space-y-2 sm:space-y-3 w-full shrink-0">
+          <div className="space-y-1.5 sm:space-y-2.5 w-full shrink-0">
             {nextBirthdayDate && (
-              <div className={`mx-auto w-[95%] sm:w-fit backdrop-blur-sm px-4 py-2 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl border shadow-lg flex flex-col items-center gap-0.5 sm:gap-1 ${themeId === 'classic' ? 'bg-white/80 border-stone-200' : 'bg-black/30 border-white/20'}`}>
-                <span className={`text-[0.55rem] sm:text-[0.65rem] uppercase tracking-widest font-bold text-center ${themeId === 'classic' ? 'text-[#B89F70]' : theme.accent}`}>
+              <div className={`mx-auto w-[90%] sm:w-fit backdrop-blur-sm px-3 py-1.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border shadow-lg flex flex-col items-center gap-0 sm:gap-0.5 ${themeId === 'classic' ? 'bg-white/80 border-stone-200' : 'bg-black/30 border-white/20'}`}>
+                <span className={`text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest font-bold text-center ${themeId === 'classic' ? 'text-[#B89F70]' : theme.accent}`}>
                   Your {targetYear} Tithi Birthday
                 </span>
-                <span className={`font-serif text-base sm:text-2xl font-semibold mt-0.5 sm:mt-1 mb-0.5 sm:mb-1 ${theme.text}`}>
+                <span className={`font-serif text-sm sm:text-xl font-semibold mt-0.5 mb-0.5 ${theme.text}`}>
                   {format(new Date(nextBirthdayDate), "MMMM do")}
                 </span>
-                <span className={`text-[0.45rem] sm:text-[0.6rem] uppercase tracking-wider text-center opacity-90 leading-tight ${theme.text}`}>
+                <span className={`text-[0.4rem] sm:text-[0.5rem] uppercase tracking-wider text-center opacity-90 leading-tight ${theme.text}`}>
                   As per Sanatana Dharma Calendar
                 </span>
               </div>
             )}
-             <div className={`h-px w-8 sm:w-12 mx-auto mt-2 sm:mt-4 ${themeId === 'classic' ? 'bg-stone-200' : 'bg-white/20'}`}></div>
-             <p className={`text-[9px] sm:text-xs max-w-[200px] leading-relaxed mx-auto italic mt-1 sm:mt-0 ${theme.muted}`}>
+             <div className={`h-px w-6 sm:w-10 mx-auto mt-1 sm:mt-3 ${themeId === 'classic' ? 'bg-stone-200' : 'bg-white/20'}`}></div>
+             <p className={`text-[8px] sm:text-[10px] max-w-[180px] leading-relaxed mx-auto italic mt-1 sm:mt-2 ${theme.muted}`}>
                &quot;Born under the light of {nakshatra}&quot;
              </p>
-             <div className={`mt-2 sm:mt-4 pt-1 sm:pt-4 text-[0.45rem] sm:text-[0.6rem] uppercase tracking-[0.15em] opacity-70 ${theme.text}`}>
+             <div className={`mt-1 sm:mt-3 pt-1 sm:pt-2 text-[0.4rem] sm:text-[0.55rem] uppercase tracking-[0.15em] opacity-70 ${theme.text}`}>
                Check your actual birthday at Janma Sutra
              </div>
           </div>
@@ -359,19 +359,19 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
       </div>
 
       {/* Actions */}
-      <div className="w-full flex flex-col items-center gap-4 mt-6">
-        <div className="flex flex-col sm:flex-row gap-3 w-full">
+      <div className="w-full flex flex-col items-center gap-3 mt-3 sm:mt-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 w-full">
           <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="w-full flex items-center justify-center gap-2 bg-white border border-stone-200 text-stone-900 px-4 py-2.5 sm:py-3 rounded-full font-medium hover:bg-stone-50 transition-all shadow-sm disabled:opacity-70"
+            className="w-full flex items-center justify-center gap-2 bg-white border border-stone-200 text-stone-900 px-3 py-1.5 sm:py-1.5 rounded-full font-medium hover:bg-stone-50 transition-all shadow-sm disabled:opacity-70"
           >
             {isDownloading ? (
-              <span className="animate-pulse text-sm">Preparing...</span>
+              <span className="animate-pulse text-xs sm:text-xs">Preparing...</span>
             ) : (
               <>
-                <Download className="w-4 h-4" />
-                <span className="text-sm">Download</span>
+                <Download className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5" />
+                <span className="text-xs sm:text-xs">Download</span>
               </>
             )}
           </button>
@@ -393,14 +393,14 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
                 console.error('Error sharing:', err);
               }
             }}
-            className="w-full flex items-center justify-center gap-2 bg-saffron text-white px-4 py-2.5 sm:py-3 rounded-full font-medium hover:bg-saffron/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+            className="w-full flex items-center justify-center gap-2 bg-saffron text-white px-3 py-1.5 sm:py-1.5 rounded-full font-medium hover:bg-saffron/90 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
           >
-            <Share2 className="w-4 h-4" />
-            <span className="text-sm">Share with Friends</span>
+            <Share2 className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5" />
+            <span className="text-xs sm:text-xs">Share with Friends</span>
           </button>
         </div>
         
-        <p className="text-xs text-earth-mid text-center px-4 leading-relaxed mt-2">
+        <p className="text-[10px] sm:text-[11px] text-earth-mid text-center px-4 leading-relaxed mt-0.5 sm:mt-1">
           Spread the cosmic wisdom. Download your blueprint as an image or share the link with others.
         </p>
       </div>
