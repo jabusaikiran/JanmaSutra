@@ -258,26 +258,30 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
         </p>
       </div>
 
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-1 w-full pb-2 px-1 snap-x select-none">
-        {Object.values(THEMES).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setThemeId(t.id as ThemeType)}
-            className={`whitespace-nowrap flex-shrink-0 snap-start px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
-              themeId === t.id 
-                ? 'bg-stone-800 text-white shadow-md scale-105' 
-                : 'bg-white text-stone-800 border border-stone-200 hover:bg-stone-50'
-            }`}
-          >
-            {t.name}
-          </button>
-        ))}
+      <div className="relative w-full group">
+        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-stone-50 to-transparent z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-stone-50 to-transparent z-10 pointer-events-none opacity-100 transition-opacity"></div>
+        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-1 w-full pb-2 px-1 snap-x select-none">
+          {Object.values(THEMES).map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setThemeId(t.id as ThemeType)}
+              className={`whitespace-nowrap flex-shrink-0 snap-start px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
+                themeId === t.id 
+                  ? 'bg-stone-800 text-white shadow-sm scale-105' 
+                  : 'bg-white text-stone-800 border border-stone-200 hover:bg-stone-50'
+              }`}
+            >
+              {t.name}
+            </button>
+          ))}
+        </div>
       </div>
       
       {/* The Story Canvas */}
       <div 
         ref={cardRef}
-        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20 flex flex-col items-center justify-start p-4 sm:p-5 text-center shrink-0 ${theme.bg}`}
+        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-lg border border-white/10 flex flex-col items-center justify-start p-4 sm:p-5 text-center shrink-0 ${theme.bg}`}
       >
         {/* Abstract/God Line Art */}
         {theme.art}
@@ -299,10 +303,10 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
             <div className="flex flex-col items-center">
               {zodiacSign && (
                 <div 
-                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-2xl shadow-lg border backdrop-blur-md mb-0.5 sm:mb-2 ${
+                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-2xl shadow-sm border border-white/10 backdrop-blur-md mb-0.5 sm:mb-2 ${
                     themeId === 'classic' 
-                      ? 'bg-white border-stone-200/50 text-stone-900' 
-                      : 'bg-black/30 border-white/20 text-white'
+                      ? 'bg-white border-stone-200/30 text-stone-900' 
+                      : 'bg-black/30 border-white/10 text-white'
                   }`}
                   title={zodiacSign.name}
                 >
@@ -316,7 +320,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
           </div>
 
           <div className="flex flex-col items-center gap-1 sm:gap-3 w-full flex-1 justify-center">
-            <div className={`p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[2rem] border inline-flex items-center justify-center min-w-[110px] min-h-[110px] sm:min-w-[160px] sm:min-h-[160px] shadow-lg backdrop-blur-sm transition-all ${theme.cardBg}`}>
+            <div className={`p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[2rem] border inline-flex items-center justify-center min-w-[110px] min-h-[110px] sm:min-w-[160px] sm:min-h-[160px] shadow-sm backdrop-blur-sm transition-all ${theme.cardBg}`}>
               <div className="flex flex-col items-center justify-center text-center">
                 <span className={`text-[7px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1.5 font-medium ${theme.muted}`}>Tithi</span>
                 <span className={`font-serif text-lg sm:text-3xl font-semibold capitalize leading-none ${theme.text}`}>{tithi.split(" ").slice(1).join(" ")}</span>
@@ -334,7 +338,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
 
           <div className="space-y-1.5 sm:space-y-2.5 w-full shrink-0">
             {nextBirthdayDate && (
-              <div className={`mx-auto w-[90%] sm:w-fit backdrop-blur-sm px-3 py-1.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border shadow-lg flex flex-col items-center gap-0 sm:gap-0.5 ${themeId === 'classic' ? 'bg-white/80 border-stone-200' : 'bg-black/30 border-white/20'}`}>
+              <div className={`mx-auto w-[90%] sm:w-fit backdrop-blur-sm px-3 py-1.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/10 shadow-sm flex flex-col items-center gap-0 sm:gap-0.5 ${themeId === 'classic' ? 'bg-white/80 border-stone-200/30' : 'bg-black/30 border-white/10'}`}>
                 <span className={`text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest font-bold text-center ${themeId === 'classic' ? 'text-[#B89F70]' : theme.accent}`}>
                   Your {targetYear} Tithi Birthday
                 </span>
