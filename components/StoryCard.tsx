@@ -259,9 +259,9 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
       </div>
 
       <div className="relative w-full group">
-        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-stone-50 to-transparent z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-stone-50 to-transparent z-10 pointer-events-none opacity-100 transition-opacity"></div>
-        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-1 w-full pb-2 px-1 snap-x select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FAF8F5] to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FAF8F5] to-transparent z-10 pointer-events-none"></div>
+        <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-1 w-full pb-2 px-2 snap-x select-none">
           {Object.values(THEMES).map((t) => (
             <button
               key={t.id}
@@ -269,7 +269,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
               className={`whitespace-nowrap flex-shrink-0 snap-start px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
                 themeId === t.id 
                   ? 'bg-stone-800 text-white shadow-sm scale-105' 
-                  : 'bg-white text-stone-800 border border-stone-200 hover:bg-stone-50'
+                  : 'bg-white text-stone-800 border border-stone-100 hover:bg-stone-50'
               }`}
             >
               {t.name}
@@ -281,7 +281,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
       {/* The Story Canvas */}
       <div 
         ref={cardRef}
-        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-lg border border-white/10 flex flex-col items-center justify-start p-4 sm:p-5 text-center shrink-0 ${theme.bg}`}
+        className={`relative w-full aspect-[9/16] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-lg border border-white/5 flex flex-col items-center justify-start p-4 sm:p-5 text-center shrink-0 ${theme.bg}`}
       >
         {/* Abstract/God Line Art */}
         {theme.art}
@@ -303,10 +303,10 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
             <div className="flex flex-col items-center">
               {zodiacSign && (
                 <div 
-                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-2xl shadow-sm border border-white/10 backdrop-blur-md mb-0.5 sm:mb-2 ${
+                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-2xl shadow-sm border border-white/5 backdrop-blur-md mb-0.5 sm:mb-2 ${
                     themeId === 'classic' 
-                      ? 'bg-white border-stone-200/30 text-stone-900' 
-                      : 'bg-black/30 border-white/10 text-white'
+                      ? 'bg-white border-stone-200/20 text-stone-900' 
+                      : 'bg-black/20 border-white/5 text-white'
                   }`}
                   title={zodiacSign.name}
                 >
@@ -338,7 +338,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
 
           <div className="space-y-1.5 sm:space-y-2.5 w-full shrink-0">
             {nextBirthdayDate && (
-              <div className={`mx-auto w-[90%] sm:w-fit backdrop-blur-sm px-3 py-1.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/10 shadow-sm flex flex-col items-center gap-0 sm:gap-0.5 ${themeId === 'classic' ? 'bg-white/80 border-stone-200/30' : 'bg-black/30 border-white/10'}`}>
+              <div className={`mx-auto w-[90%] sm:w-fit backdrop-blur-sm px-3 py-1.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/5 shadow-sm flex flex-col items-center gap-0 sm:gap-0.5 ${themeId === 'classic' ? 'bg-white/80 border-stone-200/20' : 'bg-black/20 border-white/5'}`}>
                 <span className={`text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest font-bold text-center ${themeId === 'classic' ? 'text-[#B89F70]' : theme.accent}`}>
                   Your {targetYear} Tithi Birthday
                 </span>
