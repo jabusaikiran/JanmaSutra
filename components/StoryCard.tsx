@@ -18,7 +18,7 @@ interface StoryCardProps {
   zodiacSign?: { name: string; icon: string } | null;
 }
 
-type ThemeType = "classic" | "krishna" | "shiva" | "ram" | "hanuman" | "devi" | "ganesha" | "vishnu" | "surya" | "lakshmi" | "durga" | "saraswati" | "brahma" | "kali" | "kartikeya" | "indra" | "parvati" | "narasimha" | "sundari";
+type ThemeType = "krishna" | "shiva" | "ram" | "hanuman" | "devi" | "ganesha" | "vishnu" | "surya" | "lakshmi" | "durga" | "saraswati" | "brahma" | "kali" | "kartikeya" | "indra" | "parvati" | "narasimha" | "sundari" | "classic";
 
 const THEMES: Record<ThemeType, {
   id: ThemeType,
@@ -30,16 +30,6 @@ const THEMES: Record<ThemeType, {
   cardBg: string,
   art: React.ReactNode
 }> = {
-  classic: {
-    id: "classic",
-    name: "Vedic Classic",
-    bg: "bg-gradient-to-b from-[#F9F7F2] to-[#EAE4D3]",
-    text: "text-stone-800",
-    muted: "text-[#6b625a]",
-    accent: "text-[#B89F70]",
-    cardBg: "bg-[#B89F70]/10 border-[#B89F70]/20",
-    art: null
-  },
   krishna: {
     id: "krishna",
     name: "Krishna Blue",
@@ -219,13 +209,23 @@ const THEMES: Record<ThemeType, {
     accent: "text-yellow-300",
     cardBg: "bg-black/10 border-white/20",
     art: <GiFlowerStar className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] opacity-[0.08] text-white pointer-events-none" />
+  },
+  classic: {
+    id: "classic",
+    name: "Vedic Classic",
+    bg: "bg-gradient-to-b from-[#F9F7F2] to-[#EAE4D3]",
+    text: "text-stone-800",
+    muted: "text-[#6b625a]",
+    accent: "text-[#B89F70]",
+    cardBg: "bg-[#B89F70]/10 border-[#B89F70]/20",
+    art: null
   }
 };
 
 export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, nextBirthdayDate, targetYear, zodiacSign }: StoryCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [themeId, setThemeId] = useState<ThemeType>("classic");
+  const [themeId, setThemeId] = useState<ThemeType>("krishna");
 
   const theme = THEMES[themeId];
 
@@ -235,7 +235,7 @@ export function StoryCard({ name, tithi, nakshatra, paksha, insight, archetype, 
       setIsDownloading(true);
       const dataUrl = await toPng(cardRef.current, {
         quality: 1,
-        pixelRatio: 2,
+        pixelRatio: 4,
         cacheBust: true,
       });
       const link = document.createElement("a");

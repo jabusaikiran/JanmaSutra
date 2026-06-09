@@ -9,6 +9,9 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 export const metadata: Metadata = {
   title: 'Janma Sutra – Discover Your True Birth Tithi',
   description: 'In Sanatana Dharma, your birth is defined by cosmic time — not just a calendar date.',
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 import { Header } from '@/components/Header';
